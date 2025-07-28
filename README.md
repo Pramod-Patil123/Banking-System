@@ -21,26 +21,51 @@ A simple full-stack Banking System application built using **Java Spring Boot** 
 | IDE          | Eclipse           |
 | Build Tool   | Maven             |
 
-## 📂 Project Structure
 
-Banking-System/
-├── src/
-│ ├── main/
-│ │ ├── java/
-│ │ │ └── com/example/bankingsystem/
-│ │ │ ├── controller/
-│ │ │ ├── entity/
-│ │ │ ├── repository/
-│ │ │ ├── service/
-│ │ │ └── BankingSystemApplication.java
-│ │ └── resources/
-│ │ ├── application.properties
-│ │ └── static/
-│ │ └── templates/
-│ └── test/
-├── pom.xml
-└── README.md
+2. Open in Eclipse or IntelliJ
+Import as a Maven project.
 
+Let Maven resolve all dependencies.
+
+3. Build the Project
+Run the project using:
+
+bash
+Copy code
+mvn clean install
+Or using the Spring Boot plugin:
+
+bash
+Copy code
+mvn spring-boot:run
+🗄️ Database Setup
+1. Open MySQL and run:
+sql
+Copy code
+CREATE DATABASE bankingdb;
+2. Configure application.properties
+properties
+Copy code
+spring.datasource.url=jdbc:mysql://localhost:3306/bankingdb
+spring.datasource.username=root
+spring.datasource.password=yourpassword
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+server.port=8080
+▶️ How to Run
+Step-by-step:
+Start MySQL Server.
+
+Open Eclipse or IntelliJ.
+
+Run BankingSystemApplication.java as Java Application or Spring Boot App.
+
+Access the application:
+
+arduino
+Copy code
+http://localhost:8080/
 
 📬 API Endpoints
 

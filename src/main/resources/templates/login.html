@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Banking System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #333; /* Fallback dark background */
+            background-image: url('https://source.unsplash.com/random/1920x1080/?dark-mountain-landscape'); /* Dynamic image similar to provided UI */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #fff;
+            position: relative;
+        }
+
+        /* Overlay for better text readability */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4); /* Darker overlay */
+            z-index: 0;
+        }
+
+        header {
+            background-color: transparent; /* Transparent header as per UI */
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .bank-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .header-links a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 25px;
+            font-size: 1.1em;
+            transition: color 0.3s ease;
+        }
+
+        .header-links a:hover {
+            color: #ffcc00; /* Light orange/yellow on hover */
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-container {
+            background-color: #ff6f00; /* Orange background for the form box */
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
+            color: #fff; /* White text inside the orange box */
+        }
+
+        .login-container h2 {
+            margin-top: 0;
+            margin-bottom: 5px;
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        .login-container p {
+            margin-bottom: 30px;
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative; /* For icon positioning */
+        }
+
+        .form-group i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #555; /* Icon color */
+        }
+
+        .form-control {
+            width: calc(100% - 60px); /* Adjust width for icon padding */
+            padding: 12px 12px 12px 45px; /* Left padding for icon */
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            outline: none;
+            background-color: #fff; /* White input background */
+            color: #333; /* Dark text for input */
+        }
+
+        .form-control::placeholder {
+            color: #888;
+        }
+
+        .btn-login {
+            background-color: #e65100; /* Slightly darker orange for button */
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-login:hover {
+            background-color: #bf360c; /* Even darker orange on hover */
+        }
+
+        footer {
+            background-color: transparent;
+            padding: 20px 0;
+            text-align: center;
+            font-size: 0.9em;
+            color: #fff;
+            position: relative;
+            z-index: 1;
+        }
+        footer p {
+            margin: 0;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="#" class="bank-title">BANKING SYSTEM</a>
+        <div class="header-links">
+            <a href="/register"><i class="fas fa-user-plus"></i> REGISTER</a>
+        </div>
+    </header>
+
+    <main>
+        <div class="login-container">
+            <h2>Welcome</h2>
+            <p>Enter Your Login Details</p>
+
+            <!-- Display messages from controller (e.g., "Registration successful!") -->
+            <div th:if="${message}" th:classappend="${messageType == 'success' ? 'alert-success' : 'alert-danger'}">
+                <p th:text="${message}"></p>
+            </div>
+
+            <form action="/login" method="post">
+                <div class="form-group">
+                    <i class="fas fa-phone-alt"></i>
+                    <input type="text" id="contactNo" name="contactNo" class="form-control" placeholder="Contact No." required>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="pin" name="pin" class="form-control" placeholder="PIN" required>
+                </div>
+                <button type="submit" class="btn-login">LOGIN</button>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p>MADE WITH &hearts; BY PRAMOD PATIL</p>
+    </footer>
+
+</body>
+</html>

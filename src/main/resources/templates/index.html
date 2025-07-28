@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"> <!-- Add Spring Security dialect -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banking System</title>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- Embedded CSS Styles -->
+    <style>
+        /* General Body Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            /* Enhanced background: Diagonal gradient with slightly more depth */
+            background: linear-gradient(135deg, #e0f2f7 0%, #d1e9f4 50%, #c2e0ec 100%); /* A soft, modern blue gradient */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            color: #333;
+            overflow-y: auto; /* Allow scrolling if content overflows */
+        }
+
+        /* Container for the entire page content */
+        .container {
+            background-color: rgba(255, 255, 255, 0.95); /* Slightly transparent white background */
+            border-radius: 18px; /* More rounded corners */
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15); /* Stronger, softer shadow */
+            padding: 30px; /* Increased padding */
+            margin: 30px; /* Increased margin */
+            width: 100%;
+            max-width: 1000px; /* Wider max width for better layout */
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            min-height: calc(100vh - 60px); /* Adjust min-height with increased margin */
+            animation: fadeIn 1s ease-out; /* Fade-in animation */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Header Styles */
+        .header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 20px; /* More padding */
+            margin-bottom: 30px; /* More margin */
+            border-bottom: 1px solid #e0e0e0; /* Slightly darker separator */
+            position: relative; /* For potential pseudo-elements */
+        }
+
+        .header h1 {
+            font-size: 2.8rem; /* Larger heading */
+            color: #2c3e50;
+            margin-bottom: 15px; /* More space */
+            font-weight: 700; /* Bolder font */
+            text-align: center;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05); /* Subtle text shadow */
+        }
+
+        .auth-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px; /* More space between links */
+            font-size: 0.95rem; /* Slightly larger font for links */
+        }
+
+        .auth-links a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 600; /* Bolder links */
+            padding: 8px 15px; /* More padding */
+            border-radius: 8px; /* More rounded */
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Subtle shadow for links */
+        }
+
+        .auth-links a:hover {
+            background-color: #eaf6ff;
+            color: #2980b9;
+            transform: translateY(-2px); /* Lift effect on hover */
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* Stronger shadow on hover */
+        }
+
+        /* Alert Message Styles */
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            padding: 12px; /* More padding */
+            border-radius: 10px; /* More rounded */
+            margin-bottom: 25px; /* More margin */
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            padding: 12px; /* More padding */
+            border-radius: 10px; /* More rounded */
+            margin-bottom: 25px; /* More margin */
+            text-align: center;
+            font-weight: 500;
+        }
+
+        /* Dashboard Grid Styles */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Slightly larger min-width */
+            gap: 25px; /* More space between grid items */
+            flex-grow: 1;
+            padding: 20px 0;
+        }
+
+        .dashboard-item {
+            background-color: #ffffff; /* White background for items */
+            border: 1px solid #e0e0e0; /* Lighter border */
+            border-radius: 15px; /* More rounded corners */
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08); /* Stronger, softer shadow */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 25px; /* More padding */
+            text-align: center;
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+            position: relative; /* For potential pseudo-elements */
+            overflow: hidden; /* Ensure content stays within rounded borders */
+        }
+
+        .dashboard-item::before { /* Subtle overlay effect on hover */
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(52, 152, 219, 0.05); /* Light blue overlay */
+            transform: scale(0);
+            border-radius: 15px;
+            transition: transform 0.3s ease;
+            z-index: 0;
+        }
+
+        .dashboard-item:hover::before {
+            transform: scale(1);
+        }
+
+        .dashboard-item:hover {
+            transform: translateY(-8px) scale(1.02); /* More pronounced lift and slight scale */
+            box-shadow: 0 18px 35px rgba(0, 0, 0, 0.15); /* Much stronger shadow on hover */
+            background-color: #f8faff; /* Very light blue tint on hover */
+            z-index: 1; /* Bring hovered item to front */
+        }
+
+        .dashboard-item i { /* Icon styling */
+            font-size: 3.5rem; /* Even larger icon size */
+            color: #3498db; /* Blue icon color */
+            margin-bottom: 20px; /* More space */
+            transition: color 0.3s ease;
+            position: relative;
+            z-index: 2; /* Ensure icon is above overlay */
+        }
+
+        .dashboard-item:hover i {
+            color: #2980b9; /* Darker blue icon on hover */
+        }
+
+        .dashboard-item span { /* Text styling */
+            font-size: 1.2rem; /* Larger font size for text */
+            font-weight: 600; /* Bolder text */
+            color: #444; /* Slightly darker text */
+            position: relative;
+            z-index: 2; /* Ensure text is above overlay */
+        }
+
+        /* Footer Styles */
+        .footer {
+            text-align: center;
+            padding-top: 25px; /* More padding */
+            margin-top: 40px; /* More margin */
+            border-top: 1px solid #e0e0e0; /* Slightly darker separator */
+            color: #888; /* Slightly darker text color for footer */
+            font-size: 0.95rem; /* Slightly larger font */
+        }
+
+        .footer i {
+            color: #e74c3c; /* Red heart icon */
+            margin: 0 5px; /* Space around heart */
+        }
+
+        /* Responsive Adjustments */
+        @media (min-width: 768px) {
+            .header {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+
+            .header h1 {
+                margin-bottom: 0;
+            }
+
+            .auth-links {
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                margin: 15px;
+                padding: 20px;
+            }
+            .header h1 {
+                font-size: 2.2rem;
+                margin-bottom: 10px;
+            }
+            .auth-links {
+                gap: 10px;
+                font-size: 0.85rem;
+            }
+            .dashboard-grid {
+                gap: 15px;
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Adjust for smaller screens */
+            }
+            .dashboard-item {
+                padding: 15px;
+                border-radius: 12px;
+            }
+            .dashboard-item i {
+                font-size: 3rem;
+                margin-bottom: 10px;
+            }
+            .dashboard-item span {
+                font-size: 1rem;
+            }
+            .footer {
+                padding-top: 15px;
+                margin-top: 25px;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>BANKING SYSTEM</h1>
+            <div class="auth-links">
+                <!-- Show PROFILE, ACCOUNT, LOGOUT only if authenticated -->
+                     <!-- Show LOGIN only if not authenticated -->
+                <a href="/login" sec:authorize="!isAuthenticated()"><i class="fas fa-sign-in-alt"></i>LOGIN</a> |
+                <a href="/accounts/user-profile" sec:authorize="isAuthenticated()"><i class="fas fa-user"></i>PROFILE</a> 
+                <span sec:authorize="isAuthenticated()">|</span>
+                <a href="/accounts/details" sec:authorize="isAuthenticated()"><i class="fas fa-wallet"></i> ACCOUNT</a> 
+                <span sec:authorize="isAuthenticated()">|</span>
+                <a href="/logout" sec:authorize="isAuthenticated()"><i class="fas fa-sign-out-alt"></i>LOGOUT</a> 
+                
+           
+            </div>
+        </div>
+
+        <!-- Message display area (Thymeleaf conditional rendering) -->
+        <div th:if="${message}" th:classappend="${messageType == 'success' ? 'alert-success' : 'alert-danger'}">
+            <p th:text="${message}"></p>
+        </div>
+
+        <div class="dashboard-grid">
+            <!-- Dashboard Items - All require authentication -->
+            <!-- Dashboard Item: Create New Account -->
+            <a href="/accounts/create" class="dashboard-item" sec:authorize="isAuthenticated()">
+                <i class="fas fa-user-plus"></i>
+                <span>Create New Account</span>
+            </a>
+            <!-- Dashboard Item: Deposit Funds -->
+            <a href="/accounts/deposit" class="dashboard-item" sec:authorize="isAuthenticated()">
+                <i class="fas fa-money-bill-wave"></i>
+                <span>Deposit Funds</span>
+            </a>
+            <!-- Dashboard Item: Transfer Money -->
+            <a href="/accounts/transfer" class="dashboard-item" sec:authorize="isAuthenticated()">
+                <i class="fas fa-exchange-alt"></i>
+                <span>Transfer Money</span>
+            </a>
+            <!-- Dashboard Item: Withdraw Funds -->
+            <a href="/accounts/withdraw" class="dashboard-item" sec:authorize="isAuthenticated()">
+                <i class="fas fa-money-bill-alt"></i>
+                <span>Withdraw Funds</span>
+            </a>
+            <!-- Dashboard Item: Check Balance -->
+            <a href="/accounts/check-balance" class="dashboard-item" sec:authorize="isAuthenticated()">
+                <i class="fas fa-wallet"></i>
+                <span>Check Balance</span>
+            </a>
+            <!-- Dashboard Item: Transaction History -->
+            <a href="/accounts/transaction-history" class="dashboard-item" sec:authorize="isAuthenticated()">
+                <i class="fas fa-history"></i>
+                <span>Transaction History</span>
+            </a>
+            <!-- Dashboard Item: User Profile -->
+            <a href="/accounts/user-profile" class="dashboard-item" sec:authorize="isAuthenticated()">
+                <i class="fas fa-user-circle"></i>
+                <span>User Profile</span>
+            </a>
+            <!-- Dashboard Item: Account Details -->
+            <a href="/accounts/details" class="dashboard-item" sec:authorize="isAuthenticated()">
+                <i class="fas fa-info-circle"></i>
+                <span>Account Details</span>
+            </a>
+        </div>
+
+        <div class="footer">
+            <p>&copy; 2025 Banking System. Made with <i class="fas fa-heart"></i> by Pramod Patil.</p>
+        </div>
+    </div>
+</body>
+</html>

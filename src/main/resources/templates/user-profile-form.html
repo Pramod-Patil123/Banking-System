@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Embedded CSS Styles (reusing styles for consistency) -->
+    <style>
+        /* General Body Styles - Consistent with Home Page */
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #e0f2f7 0%, #d1e9f4 50%, #c2e0ec 100%); /* A soft, modern blue gradient */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center; /* Center content vertically */
+            min-height: 100vh;
+            color: #333;
+            overflow-y: auto; /* Allow scrolling if content overflows */
+        }
+
+        /* Container for the entire page content - Consistent with Home Page */
+        .container {
+            background-color: rgba(255, 255, 255, 0.95); /* Slightly transparent white background */
+            border-radius: 18px; /* More rounded corners */
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15); /* Stronger, softer shadow */
+            padding: 40px; /* Increased padding */
+            margin: 30px;
+            width: 100%;
+            max-width: 550px; /* Slightly wider max width for better form layout */
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeIn 1s ease-out; /* Fade-in animation */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Heading Styles */
+        .container h1 {
+            font-size: 2.5rem; /* Larger heading */
+            color: #2c3e50;
+            margin-bottom: 30px; /* More space below heading */
+            font-weight: 700; /* Bolder font */
+            text-align: center;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05); /* Subtle text shadow */
+        }
+
+        /* Alert Message Styles - Keep consistent with other pages */
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            text-align: center;
+            width: 100%;
+            font-weight: 500;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            text-align: center;
+            width: 100%;
+            font-weight: 500;
+        }
+
+        /* Form Styles */
+        form {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px; /* More space between form elements */
+        }
+
+        form label {
+            font-weight: 600; /* Bolder label */
+            color: #555;
+            margin-bottom: 5px;
+            display: block;
+            font-size: 1.1rem; /* Slightly larger label font */
+        }
+
+        form input[type="text"],
+        form input[type="number"] { /* Apply styles to text and number input */
+            width: 100%;
+            padding: 15px; /* Larger padding for input fields */
+            border: 1px solid #d0d0d0; /* Lighter border */
+            border-radius: 10px; /* More rounded corners for input fields */
+            font-size: 1.1rem; /* Larger font size */
+            box-sizing: border-box;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            background-color: #fcfcfc; /* Slightly off-white background */
+        }
+
+        form input[type="text"]:focus,
+        form input[type="number"]:focus { /* Apply focus styles to text and number input */
+            border-color: #3498db; /* Blue border on focus */
+            box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.25); /* Stronger, softer blue shadow on focus */
+            outline: none;
+        }
+
+        form button[type="submit"] {
+            background: linear-gradient(to right, #3498db, #2980b9); /* Blue gradient button */
+            color: #ffffff;
+            padding: 15px 25px; /* Larger padding */
+            border: none;
+            border-radius: 10px; /* More rounded corners for button */
+            font-size: 1.2rem; /* Larger font size */
+            font-weight: 700; /* Bolder font */
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            margin-top: 20px; /* More space above the button */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Subtle button shadow */
+        }
+
+        form button[type="submit"]:hover {
+            background: linear-gradient(to right, #2980b9, #3498db); /* Reverse gradient on hover */
+            transform: translateY(-3px); /* More pronounced lift effect */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Stronger shadow on hover */
+        }
+
+        /* Back to Home Link Styles */
+        .container > a { /* Target the direct child anchor of container */
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 600; /* Bolder link */
+            margin-top: 30px; /* More space above the link */
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+            font-size: 1.05rem; /* Slightly larger font */
+        }
+
+        .container > a:hover {
+            background-color: #eaf6ff;
+            color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 600px) {
+            .container {
+                margin: 15px;
+                padding: 25px;
+            }
+
+            .container h1 {
+                font-size: 2rem;
+                margin-bottom: 25px;
+            }
+
+            form label {
+                font-size: 1rem;
+            }
+
+            form input[type="text"],
+            form input[type="number"] {
+                padding: 12px;
+                font-size: 1rem;
+            }
+
+            form button[type="submit"] {
+                font-size: 1.1rem;
+                padding: 12px 20px;
+                margin-top: 15px;
+            }
+
+            .container > a {
+                font-size: 1rem;
+                margin-top: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>View User Profile</h1>
+
+        <div th:if="${message}" th:classappend="${messageType == 'success' ? 'alert-success' : 'alert-danger'}">
+            <p th:text="${message}"></p>
+        </div>
+
+        <form action="/accounts/user-profile-details" method="post">
+            <label for="accountNumber">Account Number:</label>
+            <input type="text" id="accountNumber" name="accountNumber" required>
+            <button type="submit">View Profile</button>
+        </form>
+
+        <br>
+        <a href="/accounts">Back to Home</a>
+    </div>
+</body>
+</html>

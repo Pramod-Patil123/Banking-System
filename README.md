@@ -49,10 +49,10 @@ spring.datasource.username=root
 spring.datasource.password=Swami@123
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 spring.jpa.hibernate.ddl-auto=update 
-# Use 'update' for development, 'none' for production
+
 spring.jpa.show-sql=true
 spring.thymeleaf.cache=false 
-# For development
+
 server.error.include-message=always
 server.error.include-exception=true
 server.error.include-stacktrace=always
@@ -66,8 +66,6 @@ Open Eclipse or IntelliJ.
 Run BankingSystemApplication.java as Java Application or Spring Boot App.
 
 Access the application:
-
-arduino
 Copy code
 http://localhost:8080/
 

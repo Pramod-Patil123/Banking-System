@@ -43,16 +43,20 @@ mvn spring-boot:run
 sql
 Copy code
 CREATE DATABASE bankingdb;
-2. Configure application.properties
-properties
-Copy code
-spring.datasource.url=jdbc:mysql://localhost:3306/bankingdb
+spring.application.name=BankingSystem
+spring.datasource.url=jdbc:mysql://localhost:3306/bankingsystem
 spring.datasource.username=root
-spring.datasource.password=yourpassword
-spring.jpa.hibernate.ddl-auto=update
+spring.datasource.password=Swami@123
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.jpa.hibernate.ddl-auto=update 
+# Use 'update' for development, 'none' for production
 spring.jpa.show-sql=true
-spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
-server.port=8080
+spring.thymeleaf.cache=false 
+# For development
+server.error.include-message=always
+server.error.include-exception=true
+server.error.include-stacktrace=always
+
 ▶️ How to Run
 Step-by-step:
 Start MySQL Server.
